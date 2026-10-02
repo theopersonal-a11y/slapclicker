@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Slap Clicker</title>
+  <meta name="description" content="A 3D slapping idle clicker. Slap, upgrade, and wield katanas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="scene"></canvas>
+  <div id="fx"></div>
+  <div id="flash"></div>
+
+  <div id="hud">
+    <div id="stats" class="panel">
+      <div id="slaps">0</div>
+      <div class="label">slaps</div>
+      <div class="sub"><span id="sps">0</span> per second<span class="sep"></span><span id="spc">1</span> per slap</div>
+    </div>
+
+    <div id="foe" class="panel">
+      <div class="foe-top"><span id="foe-name">Training Dummy</span><span id="foe-level">LV 1</span></div>
+      <div class="hpbar"><div id="hp-fill"></div><div id="hp-text">30 / 30</div></div>
+      <div id="ko-bonus"></div>
+    </div>
+
+    <div id="combo"><div id="combo-text">COMBO ×1.00</div><div class="combo-bar"><div id="combo-fill"></div></div></div>
+    <div id="buffs"></div>
+
+    <div id="tools">
+      <button id="mute" title="Toggle sound">🔊</button>
+      <button id="reset" title="Reset progress">↺</button>
+    </div>
+  </div>
+
+  <aside id="shop" class="panel">
+    <div id="tabs">
+      <button data-tab="weapons" class="active">⚔️ Weapons</button>
+      <button data-tab="slappers">🧑‍🤝‍🧑 Slappers</button>
+      <button data-tab="upgrades">⭐ Upgrades<span id="upg-badge"></span></button>
+    </div>
+    <div id="shop-sub">
+      <span id="shop-hint">Your best weapon sets your slap power.</span>
+      <div id="amount"><button data-amt="1" class="active">×1</button><button data-amt="10">×10</button></div>
+    </div>
+    <div id="shop-list"></div>
+  </aside>
+
+  <div id="toasts"></div>
+
+  <div id="loading"><div class="logo">SLAP<br />CLICKER</div><div class="spin">✋</div></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
