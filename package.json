@@ -1,0 +1,14 @@
+{
+  "name": "slapclicker",
+  "version": "1.1.0",
+  "private": true,
+  "description": "A 3D slapping idle clicker game",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

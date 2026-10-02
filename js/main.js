@@ -6,6 +6,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { WEAPONS, SLAPPERS, UPGRADES, FOES, foeHp } from './data.js';
 import { buildWeapon, buildFoe, buildSlapper, buildGoldenHand, buildArena, sparkTexture } from './models.js';
+import { loadSave, saveLocal, saveRemote, clearSaves, exportSave, importSave, playerId, setPlayerId } from './storage.js';
 import { audio, unlockAudio, playHit, playSoftHit, playBuy, playKO, playGolden, playUnlock } from './audio.js';
 
 const $ = (id) => document.getElementById(id);
@@ -17,28 +18,33 @@ const lerp = (a, b, t) => a + (b - a) * t;
 // State & economy
 // =====================================================================
 
-const SAVE_KEY = 'slapclicker-save-v1';
 const fresh = () => ({
   slaps: 0, total: 0, clicks: 0, crits: 0, goldens: 0, kos: 0,
   weapon: 0, equipped: 0, owned: {}, upgrades: {}, level: 0, hp: null,
   lastSps: 0, time: Date.now(), muted: false,
 });
 
-let S = load();
+let S = { ...fresh(), ...((await loadSave()) || {}) };
 let E; // cached upgrade effects
 const buffs = []; // { type, mult, until, label, icon }
 
-function load() {
-  try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (raw) return { ...fresh(), ...JSON.parse(raw) };
-  } catch { /* storage unavailable */ }
-  return fresh();
-}
-
-function save() {
+let saving = true;
+function save(opts) {
+  if (!saving) return;
   S.time = Date.now();
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch { /* ignore */ }
+  saveLocal(S);
+  saveRemote(S, opts);
+}
+const saveOnExit = () => save({ beacon: true });
+
+// Reload without letting the unload handler write the old state back.
+function reloadWith(state) {
+  saving = false;
+  if (state) {
+    saveLocal(state);
+    saveRemote(state, { force: true });
+  }
+  setTimeout(() => location.reload(), 400);
 }
 
 function recalc() {
@@ -1025,11 +1031,39 @@ $('mute').addEventListener('click', () => {
   audio.muted = S.muted = !S.muted;
   $('mute').textContent = S.muted ? '🔇' : '🔊';
 });
-$('reset').addEventListener('click', () => {
+$('reset').addEventListener('click', async () => {
   if (!confirm('Reset ALL progress? This cannot be undone.')) return;
-  try { localStorage.removeItem(SAVE_KEY); } catch { /* ignore */ }
-  window.removeEventListener('beforeunload', save);
+  saving = false;
+  await clearSaves();
   location.reload();
+});
+$('export').addEventListener('click', () => {
+  save({ force: true });
+  exportSave(S);
+  toast('💾 Save downloaded as a <b>.json</b> file.');
+});
+$('import').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', async (ev) => {
+  const file = ev.target.files[0];
+  ev.target.value = '';
+  if (!file) return;
+  try {
+    const loadedSave = await importSave(file);
+    if (!confirm('Replace your current progress with this save file?')) return;
+    toast('📂 Save loaded! Reloading…');
+    reloadWith({ ...fresh(), ...loadedSave, time: Date.now() });
+  } catch (err) {
+    toast(`⚠️ ${err.message}`);
+  }
+});
+$('cloud').addEventListener('click', () => {
+  const id = prompt('Your player ID (use it to load this save on another device).\n\nTo load a different save, paste its player ID:', playerId());
+  if (id == null || id.trim() === playerId()) return;
+  if (!setPlayerId(id.trim())) { toast('⚠️ Player IDs are 8–64 letters, digits or dashes.'); return; }
+  saving = false;
+  saveLocal({ time: 0 }); // let the server copy for the new ID win
+  toast('☁️ Switching save…');
+  setTimeout(() => location.reload(), 400);
 });
 
 function updateHud() {
@@ -1144,8 +1178,8 @@ if (away > 30 && offlineSps > 0) {
   setTimeout(() => toast(`💤 While you were away, your slappers earned <b>${fmt(gain)}</b> slaps!`, 5), 900);
 }
 
-window.addEventListener('beforeunload', save);
-document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+window.addEventListener('pagehide', saveOnExit);
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveOnExit(); });
 
 renderShop();
 updateHud();

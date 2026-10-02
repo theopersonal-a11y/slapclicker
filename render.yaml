@@ -1,0 +1,26 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# In Render: New + -> Blueprint -> pick this repo.
+services:
+  - type: web
+    name: slapclicker
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+    # Saves go to ./data/saves.json. The free plan's filesystem is wiped on
+    # every deploy/restart, so that file doesn't last there (each player's
+    # browser still keeps its own copy). To keep saves.json permanently,
+    # change `plan: free` above to `plan: starter` (paid) and uncomment:
+    #
+    #   - key: DATA_DIR        # add under envVars
+    #     value: /var/data
+    #
+    # disk:
+    #   name: slapclicker-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
