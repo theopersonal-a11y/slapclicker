@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Slap Clicker</title>
-  <meta name="description" content="A 3D slapping idle clicker. Slap, upgrade, and wield katanas." />
+  <meta name="description" content="A 3D slapping idle clicker. Slap, upgrade, fight bosses, and ascend." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet" />
@@ -28,13 +28,17 @@
       <div id="slaps">0</div>
       <div class="label">slaps</div>
       <div class="sub"><span id="sps">0</span> per second<span class="sep"></span><span id="spc">1</span> per slap</div>
+      <div class="sub bonus" id="bonus"></div>
     </div>
 
     <div id="foe" class="panel">
       <div class="foe-top"><span id="foe-name">Training Dummy</span><span id="foe-level">LV 1</span></div>
       <div class="hpbar"><div id="hp-fill"></div><div id="hp-text">30 / 30</div></div>
+      <div id="boss-bar"><div id="boss-fill"></div><div id="boss-text"></div></div>
       <div id="ko-bonus"></div>
     </div>
+
+    <div id="skills"></div>
 
     <div id="combo"><div id="combo-text">COMBO ×1.00</div><div class="combo-bar"><div id="combo-fill"></div></div></div>
     <div id="buffs"></div>
@@ -51,13 +55,21 @@
 
   <aside id="shop" class="panel">
     <div id="tabs">
-      <button data-tab="weapons" class="active">⚔️ Weapons</button>
-      <button data-tab="slappers">🧑‍🤝‍🧑 Slappers</button>
-      <button data-tab="upgrades">⭐ Upgrades<span id="upg-badge"></span></button>
+      <div class="tabrow">
+        <button data-tab="weapons" class="active">⚔️ Weapons</button>
+        <button data-tab="slappers">🧑‍🤝‍🧑 Slappers</button>
+        <button data-tab="upgrades">⭐ Upgrades<span class="badge" id="upg-badge"></span></button>
+      </div>
+      <div class="tabrow small">
+        <button data-tab="quests">📜 Quests<span class="badge" id="quest-badge"></span></button>
+        <button data-tab="trophies">🏆 Trophies</button>
+        <button data-tab="ascend">👼 Ascend<span class="badge" id="ascend-badge"></span></button>
+        <button data-tab="stats">📊 Stats</button>
+      </div>
     </div>
     <div id="shop-sub">
       <span id="shop-hint">Your best weapon sets your slap power.</span>
-      <div id="amount"><button data-amt="1" class="active">×1</button><button data-amt="10">×10</button></div>
+      <div id="amount"><button data-amt="1" class="active">×1</button><button data-amt="10">×10</button><button data-amt="100">×100</button><button data-amt="0">MAX</button></div>
     </div>
     <div id="shop-list"></div>
   </aside>

@@ -31,15 +31,23 @@ The free plan wipes the server filesystem on every deploy or restart, and spins 
 
 ## How to play
 
-- **Click / tap / Space** to slap the opponent. Rapid slaps build a **combo** (up to ×2), and 5% of slaps are **critical** (×10).
-- Every opponent has HP. **Knock them out** for a big slap bonus and a permanent **+3% production**. Each new foe is tougher (Grumpy Neighbor, Pirate Pete, Viking Vern, Shogun Ken, the Demon King…).
-- **Weapons** set your slap power and change what you swing:
-  Bare Hand → Wet Fish → Frying Pan → Baseball Bat → **Katana** → **Dual Katanas** → **Plasma Katana** → Cosmic Gauntlet → **Galaxy Blade**.
-- **Slappers** slap for you automatically: interns, rubber chickens, robots, ninjas, samurai, dragons, interdimensional portals, and the Hand of God. They show up in the arena and fight alongside you.
-- **Upgrades** multiply slappers, clicks, crits, and more.
-- Click the **Golden Hand** when it floats by for a Frenzy, a lucky bonus, or a Slap Storm.
+- **Click / tap / Space** to slap the opponent. Rapid slaps build a **combo** (up to ×2, more with upgrades), and 5% of slaps are **critical** (×10).
+- Every opponent has HP. **Knock them out** for a big slap bonus and a permanent **+3% production**. There are 24 opponents (Pirate Pete, Chef Gordo, Disco Dave, El Slapador, Astro Andy, the Demon King…), and they come back tougher each lap.
+- **Bosses** show up every 5th level (Sumo Supreme, Robo-Overlord, The Slap Lich, Void Titan…). They have 3× HP and a **30-second timer**: beat them in time for double rewards and a treasure chest, or they heal and you try again.
+- **Worlds**: every 10 levels the arena changes: Dojo at Dusk, Neon City, Frozen Peak, Volcano Arena, Toxic Swamp, Candy Land, Outer Space, Golden Heaven.
+- **21 weapons** set your slap power and change what you swing:
+  Bare Hand → Boxing Glove → Wet Fish → Flip-Flop → Frying Pan → Tennis Racket → Baseball Bat → Electric Guitar → **Katana** → Thunder Hammer → **Dual Katanas** → Sea King Trident → **Plasma Katana** → Reaper's Scythe → Cosmic Gauntlet → Rainbow Mega-Fish → **Galaxy Blade** → Black Hole Paddle → Phoenix Feather → **Infinity Edge** → **The Omega Palm**.
+- **17 slappers** slap for you automatically and fight in the arena: interns, slipper grandmas, rubber chickens, monkeys, robots, octopuses, ninjas, wizards, samurai, giant mechs, dragons, UFOs, portals, the Hand of God, time clones, a black hole, and the Multiverse Council. Buy ×1, ×10, ×100 or MAX.
+- **150+ upgrades** multiply slappers, clicks, weapons, crits, combos, chests, boss timers and more (with a "buy all" button).
+- **Skills** (keys **1–6**) unlock as you progress: Mega Slap, Slap Fury, Rage Mode, Slapper Rally, Time Warp and Golden Call.
+- **Treasure chests** drop from knockouts. Click them for slaps, frenzies, free slappers, cooldown resets, jackpots, and (rarely) a Slap Soul.
+- Click the **Golden Hand** when it floats by: Frenzy, Lucky, Slap Storm, Combo Lock, Slapper Swarm or Chest Rain.
+- **Quests**: three (or four) at a time; claim them for big rewards.
+- **180+ achievements** (🏆 Trophies tab), each worth +1% production.
+- **Ascend** once you've earned 1M slaps in a run: restart for **Slap Souls** (+4% production each) and spend them in the **Soul Shop** on 18 permanent perks (Ghost Hand auto-slapper, Head Start, Eternal Combo, Big Bang ×10…).
+- The **📊 Stats** tab tracks your whole slapping career.
 
-Progress auto-saves (see below), and your slappers keep earning (at 50%) while you're away, up to 8 hours.
+Progress auto-saves (see above). Your slappers keep earning while you're away (50% for up to 8 hours, better with upgrades and perks). Saves from the previous version load fine; your weapons are carried over.
 
 ## Files
 
@@ -47,7 +55,7 @@ Progress auto-saves (see below), and your slappers keep earning (at 50%) while y
 - `render.yaml`: Render deployment Blueprint
 - `index.html`, `css/style.css`: page and HUD
 - `js/main.js`: game loop, economy, animation, UI
-- `js/models.js`: procedural 3D models (weapons, opponents, slappers, dojo arena)
-- `js/data.js`: balance data (weapons, slappers, upgrades, foes)
+- `js/models.js`: procedural 3D models (weapons, opponents and hats, slappers, chests, dojo arena)
+- `js/data.js`: balance data (weapons, slappers, upgrades, foes, bosses, worlds, skills, perks, achievements, quests)
 - `js/storage.js`: browser/server saving, export and import
 - `js/audio.js`: synthesized sound effects (WebAudio, no asset files)

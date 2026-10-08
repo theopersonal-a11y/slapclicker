@@ -23,8 +23,9 @@ export function unlockAudio() {
   if (init() && ctx.state === 'suspended') ctx.resume();
 }
 
+// Sounds only play once a click/tap has created the audio context.
 function ready() {
-  return !audio.muted && init();
+  return !audio.muted && ctx !== null;
 }
 
 function env(gainNode, t, peak, decay) {
@@ -78,6 +79,33 @@ export function playHit(kind, crit = false) {
       [523, 1310, 2210, 3400].forEach((f, i) =>
         tone(t, { from: jitter(f, 0.03), peak: 0.18 / (i + 1) * boost, decay: 0.9 - i * 0.15 }));
       break;
+    case 'racket':
+      noise(t, { freq: jitter(1800), q: 1.2, peak: 0.7 * boost, decay: 0.08 });
+      tone(t, { type: 'triangle', from: jitter(900), to: 300, peak: 0.25 * boost, decay: 0.25 });
+      break;
+    case 'guitar':
+      noise(t, { freq: jitter(1100), q: 0.8, peak: 0.6 * boost, decay: 0.12 });
+      [82, 123, 165].forEach((f) => tone(t, { type: 'sawtooth', from: jitter(f, 0.02), peak: 0.09 * boost, decay: 0.7 }));
+      break;
+    case 'thunder':
+      noise(t, { freq: jitter(700), q: 0.8, peak: 0.9 * boost, decay: 0.15 });
+      noise(t + 0.03, { type: 'lowpass', freq: 300, peak: 0.7 * boost, decay: 0.6, rate: 0.4 });
+      tone(t, { type: 'square', from: 1800, to: 200, peak: 0.06, decay: 0.15 });
+      break;
+    case 'void':
+      tone(t, { from: jitter(260), to: 30, peak: 0.6 * boost, decay: 0.45 });
+      noise(t, { type: 'lowpass', freq: 400, peak: 0.6 * boost, decay: 0.3, rate: 0.6 });
+      break;
+    case 'fire':
+      noise(t, { type: 'highpass', freq: jitter(2500), peak: 0.5 * boost, decay: 0.25, rate: 0.8 });
+      noise(t, { freq: 900, q: 0.7, peak: 0.6 * boost, decay: 0.12 });
+      tone(t, { type: 'triangle', from: 600, to: 1400, peak: 0.08, decay: 0.3 });
+      break;
+    case 'omega':
+      noise(t, { freq: jitter(1400), q: 0.8, peak: 0.8 * boost, decay: 0.14 });
+      tone(t, { from: 90, to: 40, peak: 0.6 * boost, decay: 0.35 });
+      [523, 659, 784].forEach((f) => tone(t + 0.02, { type: 'triangle', from: jitter(f, 0.01), peak: 0.06 * boost, decay: 0.6 }));
+      break;
     case 'bat':
     case 'gauntlet':
       noise(t, { freq: jitter(700), q: 0.8, peak: 0.9 * boost, decay: 0.15 });
@@ -123,4 +151,37 @@ export function playUnlock() {
   const t = ctx.currentTime;
   tone(t, { type: 'sawtooth', from: 110, to: 440, peak: 0.12, decay: 0.5 });
   [440, 554, 659, 880].forEach((f, i) => tone(t + 0.2 + i * 0.07, { type: 'triangle', from: f, peak: 0.15, decay: 0.5 }));
+}
+
+export function playAchievement() {
+  if (!ready()) return;
+  const t = ctx.currentTime;
+  [659, 784, 988, 1319].forEach((f, i) => tone(t + i * 0.07, { type: 'triangle', from: f, peak: 0.12, decay: 0.35 }));
+}
+
+export function playChest() {
+  if (!ready()) return;
+  const t = ctx.currentTime;
+  noise(t, { type: 'lowpass', freq: 800, peak: 0.4, decay: 0.15 });
+  [523, 784, 1046, 1568, 2093].forEach((f, i) => tone(t + 0.1 + i * 0.05, { from: f, peak: 0.12, decay: 0.5 }));
+}
+
+export function playSkill() {
+  if (!ready()) return;
+  const t = ctx.currentTime;
+  tone(t, { type: 'sawtooth', from: 200, to: 900, peak: 0.12, decay: 0.3 });
+  noise(t, { type: 'highpass', freq: 3000, peak: 0.3, decay: 0.3, rate: 0.7 });
+}
+
+export function playBoss() {
+  if (!ready()) return;
+  const t = ctx.currentTime;
+  [110, 104, 98].forEach((f, i) => tone(t + i * 0.25, { type: 'sawtooth', from: f, peak: 0.18, decay: 0.4 }));
+  noise(t, { type: 'lowpass', freq: 200, peak: 0.6, decay: 0.8, rate: 0.3 });
+}
+
+export function playAscend() {
+  if (!ready()) return;
+  const t = ctx.currentTime;
+  [262, 330, 392, 523, 659, 784, 1046].forEach((f, i) => tone(t + i * 0.09, { type: 'triangle', from: f, peak: 0.14, decay: 0.9 }));
 }
